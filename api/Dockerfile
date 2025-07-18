@@ -17,6 +17,9 @@ COPY . .
 # Create data directory for SQLite database
 RUN mkdir -p /app/data && chown -R nodejs:nodejs /app/data
 
+# Initialize database schema
+RUN node db/initDatabase.js
+
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001

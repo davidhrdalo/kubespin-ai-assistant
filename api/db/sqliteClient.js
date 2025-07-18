@@ -1,5 +1,6 @@
 const Database = require('better-sqlite3');
 const config = require('../config');
+const { initDatabase } = require('./initDatabase');
 
 class DatabaseService {
   constructor() {
@@ -11,6 +12,12 @@ class DatabaseService {
     const fs = require('fs');
     if (!fs.existsSync(dbDir)) {
       fs.mkdirSync(dbDir, { recursive: true });
+    }
+    
+    // Initialize database if it doesn't exist
+    if (!fs.existsSync(dbPath)) {
+      console.log('[Database] Initializing new database...');
+      initDatabase();
     }
     
     this.db = new Database(dbPath);
