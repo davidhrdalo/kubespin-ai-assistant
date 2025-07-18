@@ -1,0 +1,293 @@
+{
+  "name": "AI Assistant",
+  "version": "1.0.0",
+  "description": "An AI-powered assistant for tool calls, plugin installation, and code generation",
+  "author": "Kubespin",
+  "platformCompatibility": ">=1.0.0",
+  "config": {
+    "schemaVersion": "2.0",
+    "displayName": "AI Assistant",
+    "description": "AI-powered assistant for development tasks, plugin management, and code generation",
+    "iconUrl": "/platform-ide-assets/ai-logo.svg",
+    "requiresPreview": false,
+    "containers": {
+      "ai-backend": {
+        "dockerfile": "./api/Dockerfile",
+        "ports": [3002],
+        "environment": {
+          "NODE_ENV": "production",
+          "PORT": "3002",
+          "OPENAI_API_KEY": "",
+          "PLUGIN_MANAGER_URL": "http://kubespin-backend-service:3000"
+        },
+        "healthCheck": {
+          "type": "http",
+          "path": "/health",
+          "interval": "30s",
+          "retries": 3
+        }
+      },
+      "ai-ui": {
+        "dockerfile": "./kubespin-ui/Dockerfile",
+        "ports": [80],
+        "environment": {
+          "AI_API_URL": "http://ai-assistant-backend-service:3002"
+        }
+      }
+    },
+    "ui": {
+      "type": "static_assets",
+      "sourceContainer": "ai-ui",
+      "components": {
+        "pageView": "/page-view.js"
+      },
+      "rootSidebarLinks": [
+        {
+          "type": "title",
+          "text": "AI Assistant"
+        },
+        {
+          "type": "link",
+          "to": "/plugin/ai-assistant/chat",
+          "icon": "FaComments",
+          "text": "AI Chat"
+        },
+        {
+          "type": "link",
+          "to": "/plugin/ai-assistant/plugin-manager",
+          "icon": "FaPuzzlePiece",
+          "text": "Plugin Manager"
+        },
+        {
+          "type": "link",
+          "to": "/plugin/ai-assistant/code-generator",
+          "icon": "FaCode",
+          "text": "Code Generator"
+        },
+        {
+          "type": "link",
+          "to": "/plugin/ai-assistant/tool-calls",
+          "icon": "FaTools",
+          "text": "Tool Calls"
+        },
+        {
+          "type": "divider"
+        }
+      ],
+      "pages": [
+        {
+          "id": "chat",
+          "name": "AI Chat",
+          "description": "Interactive AI chat for development assistance",
+          "component": "/chat.js",
+          "route": "/chat",
+          "icon": "💬",
+          "category": "AI"
+        },
+        {
+          "id": "plugin-manager",
+          "name": "Plugin Manager",
+          "description": "Install and manage kubespin plugins",
+          "component": "/plugin-manager.js",
+          "route": "/plugin-manager",
+          "icon": "🧩",
+          "category": "Management"
+        },
+        {
+          "id": "code-generator",
+          "name": "Code Generator",
+          "description": "Generate code snippets and components",
+          "component": "/code-generator.js",
+          "route": "/code-generator",
+          "icon": "⚡",
+          "category": "Development"
+        },
+        {
+          "id": "tool-calls",
+          "name": "Tool Calls",
+          "description": "Execute system commands and tool calls",
+          "component": "/tool-calls.js",
+          "route": "/tool-calls",
+          "icon": "🔧",
+          "category": "System"
+        }
+      ],
+      "homeWidgets": [
+        {
+          "id": "ai-status",
+          "name": "AI Assistant Status",
+          "description": "Shows AI assistant connection status and capabilities",
+          "component": "/ai-status.js",
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "priority": 10
+        },
+        {
+          "id": "quick-ai-actions",
+          "name": "Quick AI Actions",
+          "description": "Common AI assistant actions and shortcuts",
+          "component": "/quick-ai-actions.js",
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "priority": 9
+        },
+        {
+          "id": "recent-ai-conversations",
+          "name": "Recent AI Conversations",
+          "description": "Shows recent AI chat conversations and interactions",
+          "component": "/recent-ai-conversations.js",
+          "size": {
+            "width": 3,
+            "height": 2
+          },
+          "priority": 8
+        },
+        {
+          "id": "plugin-installation-status",
+          "name": "Plugin Installation Status",
+          "description": "Shows status of plugin installations and updates",
+          "component": "/plugin-installation-status.js",
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "priority": 7
+        }
+      ]
+    },
+    "routing": {
+      "subdomain": "ai-assistant",
+      "targetContainer": "ai-ui",
+      "targetPort": 80,
+      "paths": {
+        "/": "ai-ui",
+        "/api": "ai-backend"
+      }
+    },
+    "backendInteractions": [
+      {
+        "name": "sendChatMessage",
+        "description": "Send a message to the AI assistant",
+        "endpoint": "/api/chat",
+        "method": "POST",
+        "requestSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "The message to send to the AI assistant"
+            },
+            "context": {
+              "type": "object",
+              "description": "Additional context for the AI"
+            }
+          },
+          "required": ["message"]
+        }
+      },
+      {
+        "name": "installPlugin",
+        "description": "Install a new plugin",
+        "endpoint": "/api/plugins/install",
+        "method": "POST",
+        "requestSchema": {
+          "type": "object",
+          "properties": {
+            "pluginName": {
+              "type": "string",
+              "description": "Name of the plugin to install"
+            },
+            "pluginUrl": {
+              "type": "string",
+              "description": "URL or repository of the plugin"
+            }
+          },
+          "required": ["pluginName"]
+        }
+      },
+      {
+        "name": "executeToolCall",
+        "description": "Execute a tool call or system command",
+        "endpoint": "/api/tools/execute",
+        "method": "POST",
+        "requestSchema": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string",
+              "description": "The command to execute"
+            },
+            "type": {
+              "type": "string",
+              "enum": ["shell", "api", "file"],
+              "description": "Type of tool call"
+            }
+          },
+          "required": ["command", "type"]
+        }
+      },
+      {
+        "name": "generateCode",
+        "description": "Generate code based on requirements",
+        "endpoint": "/api/code/generate",
+        "method": "POST",
+        "requestSchema": {
+          "type": "object",
+          "properties": {
+            "requirements": {
+              "type": "string",
+              "description": "Code requirements and specifications"
+            },
+            "language": {
+              "type": "string",
+              "description": "Programming language for code generation"
+            },
+            "framework": {
+              "type": "string",
+              "description": "Framework or library to use"
+            }
+          },
+          "required": ["requirements"]
+        }
+      },
+      {
+        "name": "getAvailablePlugins",
+        "description": "Get list of available plugins",
+        "endpoint": "/api/plugins/available",
+        "method": "GET"
+      },
+      {
+        "name": "getInstalledPlugins",
+        "description": "Get list of installed plugins",
+        "endpoint": "/api/plugins/installed",
+        "method": "GET"
+      }
+    ],
+    "environmentVariables": [
+      {
+        "name": "OPENAI_API_KEY",
+        "default": "",
+        "description": "OpenAI API key for AI assistant functionality"
+      },
+      {
+        "name": "AI_BACKEND_PORT",
+        "default": "3002",
+        "description": "Port for the AI backend server"
+      },
+      {
+        "name": "PLUGIN_MANAGER_URL",
+        "default": "http://kubespin-backend-service:3000",
+        "description": "URL for the kubespin plugin manager"
+      },
+      {
+        "name": "AI_MODEL",
+        "default": "gpt-4",
+        "description": "AI model to use for assistant functionality"
+      }
+    ]
+  }
+} 
