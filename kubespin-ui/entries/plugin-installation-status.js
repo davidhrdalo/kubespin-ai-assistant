@@ -1,3 +1,3 @@
-import PluginInstallationStatusWidget from '../src/widgets/PluginInstallationStatusWidget/PluginInstallationStatusWidget.jsx';
+import PluginInstallationStatusWidget from '../widgets/PluginInstallationStatusWidget/PluginInstallationStatusWidget.jsx';
 
 export default PluginInstallationStatusWidget; 

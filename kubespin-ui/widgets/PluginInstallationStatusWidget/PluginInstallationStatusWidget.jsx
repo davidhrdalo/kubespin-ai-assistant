@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './PluginInstallationStatusWidget.module.css';
 
 const PluginInstallationStatusWidget = () => {
   const [installedPlugins, setInstalledPlugins] = useState([]);
@@ -66,12 +67,12 @@ const PluginInstallationStatusWidget = () => {
 
   if (isLoading) {
     return (
-      <div className="ai-widget">
-        <div className="ai-widget-header">
-          <h3 className="ai-widget-title">Plugin Installation Status</h3>
+      <div className={styles.aiWidget}>
+        <div className={styles.aiWidgetHeader}>
+          <h3 className={styles.aiWidgetTitle}>Plugin Installation Status</h3>
         </div>
-        <div className="ai-loading">
-          <div className="ai-spinner"></div>
+        <div className={styles.aiLoading}>
+          <div className={styles.aiSpinner}></div>
           <span>Loading plugins...</span>
         </div>
       </div>
@@ -79,60 +80,43 @@ const PluginInstallationStatusWidget = () => {
   }
 
   return (
-    <div className="ai-widget">
-      <div className="ai-widget-header">
-        <h3 className="ai-widget-title">Plugin Installation Status</h3>
+    <div className={styles.aiWidget}>
+      <div className={styles.aiWidgetHeader}>
+        <h3 className={styles.aiWidgetTitle}>Plugin Installation Status</h3>
         <button
           onClick={loadInstalledPlugins}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1.2rem',
-            color: '#6b7280'
-          }}
+          className={styles.aiRefreshButton}
           title="Refresh plugins"
         >
           🔄
         </button>
       </div>
 
-      <div className="ai-widget-content">
+      <div className={styles.aiWidgetContent}>
         {installedPlugins.length === 0 ? (
-          <p style={{ textAlign: 'center', color: '#6b7280' }}>
+          <p className={styles.aiEmptyState}>
             No plugins installed
           </p>
         ) : (
-          <div>
+          <div className={styles.aiPluginsList}>
             {installedPlugins.map((plugin) => (
               <div
                 key={plugin.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '0.5rem 0',
-                  borderBottom: '1px solid #f3f4f6'
-                }}
+                className={styles.aiPluginItem}
               >
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '500', fontSize: '0.875rem' }}>
+                <div className={styles.aiPluginInfo}>
+                  <div className={styles.aiPluginName}>
                     {plugin.name}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                  <div className={styles.aiPluginVersion}>
                     v{plugin.version}
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div className={styles.aiPluginStatus}>
                   <div
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      backgroundColor: getStatusColor(plugin.status)
-                    }}
+                    className={`${styles.aiStatusIndicator} ${styles[plugin.status]}`}
                   />
-                  <span style={{ fontSize: '0.75rem', color: getStatusColor(plugin.status) }}>
+                  <span className={`${styles.aiStatusText} ${styles[plugin.status]}`}>
                     {getStatusText(plugin.status)}
                   </span>
                 </div>
@@ -141,17 +125,10 @@ const PluginInstallationStatusWidget = () => {
           </div>
         )}
 
-        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <div className={styles.aiManageButtonContainer}>
           <button
             onClick={() => window.location.href = '/plugin/ai-assistant/plugin-manager'}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              color: '#3b82f6',
-              fontWeight: '500'
-            }}
+            className={styles.aiManageButton}
           >
             Manage Plugins
           </button>

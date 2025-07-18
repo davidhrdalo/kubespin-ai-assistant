@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import styles from './ChatPage.module.css';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -74,39 +75,39 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="ai-container">
-      <div className="ai-header">
+    <div className={styles.aiContainer}>
+      <div className={styles.aiHeader}>
         <h1>AI Assistant Chat</h1>
         <p>Ask me anything about development, plugins, or get help with your projects</p>
       </div>
 
-      <div className="ai-chat-container">
-        <div className="ai-chat-messages">
+      <div className={styles.aiChatContainer}>
+        <div className={styles.aiChatMessages}>
           {messages.length === 0 && (
-            <div className="ai-loading">
+            <div className={styles.aiLoading}>
               <p>Start a conversation with the AI assistant...</p>
             </div>
           )}
           
           {messages.map((message, index) => (
-            <div key={index} className={`ai-message ${message.role}`}>
-              <div className="ai-message-header">
+            <div key={index} className={`${styles.aiMessage} ${styles[message.role]}`}>
+              <div className={styles.aiMessageHeader}>
                 {message.role === 'user' ? 'You' : 'AI Assistant'}
                 <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
                   {message.timestamp.toLocaleTimeString()}
                 </span>
               </div>
-              <div className="ai-message-content">
+              <div className={styles.aiMessageContent}>
                 {message.content}
               </div>
             </div>
           ))}
           
           {isLoading && (
-            <div className="ai-message assistant">
-              <div className="ai-message-header">AI Assistant</div>
-              <div className="ai-loading">
-                <div className="ai-spinner"></div>
+            <div className={`${styles.aiMessage} ${styles.assistant}`}>
+              <div className={styles.aiMessageHeader}>AI Assistant</div>
+              <div className={styles.aiLoading}>
+                <div className={styles.aiSpinner}></div>
                 <span>Thinking...</span>
               </div>
             </div>
@@ -115,9 +116,9 @@ const ChatPage = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="ai-chat-input">
+        <div className={styles.aiChatInput}>
           <textarea
-            className="ai-textarea"
+            className={styles.aiTextarea}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -125,7 +126,7 @@ const ChatPage = () => {
             disabled={isLoading}
           />
           <button
-            className="ai-button"
+            className={styles.aiButton}
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
           >
@@ -134,11 +135,10 @@ const ChatPage = () => {
         </div>
 
         {messages.length > 0 && (
-          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+          <div className={styles.aiClearButton}>
             <button
-              className="ai-button secondary"
+              className={`${styles.aiButton} ${styles.secondary}`}
               onClick={clearChat}
-              style={{ fontSize: '0.875rem' }}
             >
               Clear Chat
             </button>

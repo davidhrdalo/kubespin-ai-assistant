@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from './CodeGeneratorPage.module.css';
 
 const CodeGeneratorPage = () => {
   const [requirements, setRequirements] = useState('');
@@ -100,20 +101,20 @@ const CodeGeneratorPage = () => {
   };
 
   return (
-    <div className="ai-container">
-      <div className="ai-header">
+    <div className={styles.aiContainer}>
+      <div className={styles.aiHeader}>
         <h1>Code Generator</h1>
         <p>Generate code snippets and components using AI</p>
       </div>
 
-      <div className="ai-card">
+      <div className={styles.aiCard}>
         <h2>Code Requirements</h2>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+        <div className={styles.aiFormGroup}>
+          <label className={styles.aiLabel}>
             Requirements:
           </label>
           <textarea
-            className="ai-textarea"
+            className={styles.aiTextarea}
             value={requirements}
             onChange={(e) => setRequirements(e.target.value)}
             placeholder="Describe what code you want to generate... (e.g., 'Create a React component for a user profile card with avatar, name, and bio')"
@@ -121,13 +122,13 @@ const CodeGeneratorPage = () => {
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+        <div className={styles.aiFormGrid}>
+          <div className={styles.aiFormGroup}>
+            <label className={styles.aiLabel}>
               Programming Language:
             </label>
             <select
-              className="ai-input"
+              className={styles.aiInput}
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             >
@@ -139,12 +140,12 @@ const CodeGeneratorPage = () => {
             </select>
           </div>
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+          <div className={styles.aiFormGroup}>
+            <label className={styles.aiLabel}>
               Framework (Optional):
             </label>
             <select
-              className="ai-input"
+              className={styles.aiInput}
               value={framework}
               onChange={(e) => setFramework(e.target.value)}
             >
@@ -158,15 +159,15 @@ const CodeGeneratorPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className={styles.aiButtonGroup}>
           <button
-            className="ai-button"
+            className={styles.aiButton}
             onClick={generateCode}
             disabled={!requirements.trim() || isGenerating}
           >
             {isGenerating ? (
               <>
-                <div className="ai-spinner" style={{ display: 'inline-block', marginRight: '0.5rem' }}></div>
+                <div className={styles.aiSpinner}></div>
                 Generating...
               </>
             ) : (
@@ -174,7 +175,7 @@ const CodeGeneratorPage = () => {
             )}
           </button>
           <button
-            className="ai-button secondary"
+            className={`${styles.aiButton} ${styles.secondary}`}
             onClick={clearForm}
             disabled={isGenerating}
           >
@@ -184,20 +185,20 @@ const CodeGeneratorPage = () => {
       </div>
 
       {generatedCode && (
-        <div className="ai-card">
+        <div className={styles.aiCard}>
           <h2>Generated Code</h2>
-          <div className="ai-code-editor">
+          <div className={styles.aiCodeEditor}>
             <pre>{generatedCode}</pre>
           </div>
-          <div className="ai-code-actions">
+          <div className={styles.aiCodeActions}>
             <button
-              className="ai-button"
+              className={styles.aiButton}
               onClick={() => copyToClipboard(generatedCode)}
             >
               Copy to Clipboard
             </button>
             <button
-              className="ai-button secondary"
+              className={`${styles.aiButton} ${styles.secondary}`}
               onClick={() => downloadCode(generatedCode, language)}
             >
               Download File
@@ -207,31 +208,25 @@ const CodeGeneratorPage = () => {
       )}
 
       {generationHistory.length > 0 && (
-        <div className="ai-card">
+        <div className={styles.aiCard}>
           <h2>Recent Generations</h2>
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <div className={styles.aiHistory}>
             {generationHistory.map((item) => (
               <div
                 key={item.id}
-                style={{
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
-                  padding: '1rem',
-                  marginBottom: '1rem',
-                  cursor: 'pointer'
-                }}
+                className={styles.aiHistoryItem}
                 onClick={() => setGeneratedCode(item.code)}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <strong>{item.language}</strong>
-                  <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                <div className={styles.aiHistoryHeader}>
+                  <span className={styles.aiHistoryTitle}>{item.language}</span>
+                  <span className={styles.aiHistoryMeta}>
                     {item.timestamp.toLocaleString()}
                   </span>
                 </div>
-                <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '0 0 0.5rem 0' }}>
+                <p className={styles.aiHistoryPreview}>
                   {item.requirements.substring(0, 100)}...
                 </p>
-                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                <div className={styles.aiHistoryMeta}>
                   {item.framework && `Framework: ${item.framework}`}
                 </div>
               </div>

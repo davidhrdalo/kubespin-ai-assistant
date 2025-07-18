@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './AIStatusWidget.module.css';
 
 const AIStatusWidget = () => {
   const [status, setStatus] = useState('checking');
@@ -59,55 +60,44 @@ const AIStatusWidget = () => {
   ];
 
   return (
-    <div className="ai-widget">
-      <div className="ai-widget-header">
-        <h3 className="ai-widget-title">AI Assistant Status</h3>
+    <div className={styles.aiWidget}>
+      <div className={styles.aiWidgetHeader}>
+        <h3 className={styles.aiWidgetTitle}>AI Assistant Status</h3>
         <button
           onClick={checkStatus}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1.2rem',
-            color: '#6b7280'
-          }}
+          className={styles.aiRefreshButton}
           title="Refresh status"
         >
           🔄
         </button>
       </div>
 
-      <div className="ai-widget-content">
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+      <div className={styles.aiWidgetContent}>
+        <div className={styles.aiStatusContainer}>
           <div
-            style={{
-              width: '12px',
-              height: '12px',
-              borderRadius: '50%',
-              backgroundColor: getStatusColor(),
-              marginRight: '0.5rem'
-            }}
+            className={`${styles.aiStatusIndicator} ${styles[status]}`}
           />
-          <span style={{ fontWeight: '500' }}>{getStatusText()}</span>
+          <span className={styles.aiStatusText}>{getStatusText()}</span>
         </div>
 
         {aiModel && (
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>Model:</strong> {aiModel}
+          <div className={styles.aiModelInfo}>
+            <span className={styles.aiModelLabel}>Model:</span>
+            <span className={styles.aiModelValue}> {aiModel}</span>
           </div>
         )}
 
         {lastChecked && (
-          <div style={{ marginBottom: '1rem', fontSize: '0.75rem', color: '#9ca3af' }}>
+          <div className={styles.aiLastChecked}>
             Last checked: {lastChecked.toLocaleTimeString()}
           </div>
         )}
 
-        <div>
-          <strong>Capabilities:</strong>
-          <div style={{ marginTop: '0.5rem' }}>
+        <div className={styles.aiCapabilities}>
+          <div className={styles.aiCapabilitiesTitle}>Capabilities:</div>
+          <div className={styles.aiCapabilitiesList}>
             {capabilities.map((capability, index) => (
-              <div key={index} style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>
+              <div key={index} className={styles.aiCapability}>
                 {capability}
               </div>
             ))}

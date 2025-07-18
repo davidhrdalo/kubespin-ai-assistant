@@ -1,12 +1,25 @@
-FROM mongo:latest
+FROM alpine:latest
 
-# Set default MongoDB configuration
-ENV MONGO_PORT=27017
-ENV MONGO_INITDB_ROOT_USERNAME=mongoroot
-ENV MONGO_INITDB_ROOT_PASSWORD=rootpassword
+# Install SQLite
+RUN apk add --no-cache sqlite
 
-# Expose MongoDB port
-EXPOSE 27017
+# Create data directory
+RUN mkdir -p /data
 
-# Use the default MongoDB entrypoint
-CMD ["mongod", "--bind_ip_all"] 
+# Set permissions
+RUN chown -R 1001:1001 /data
+
+# Switch to non-root user
+USER 1001
+
+# Copy SQL initialization file
+COPY init.sql /init.sql
+
+# Initialize database with SQL file
+RUN sqlite3 /data/ai_assistant.db < /init.sql
+
+# Expose data directory
+VOLUME /data
+
+# Default command to keep container running
+CMD ["tail", "-f", "/dev/null"] 

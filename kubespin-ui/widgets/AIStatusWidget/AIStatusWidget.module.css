@@ -1,0 +1,155 @@
+/* AIStatusWidget.module.css */
+.aiWidget {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.aiWidget:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.aiWidgetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.aiWidgetTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.aiRefreshButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6b7280;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+.aiRefreshButton:hover {
+  color: #3b82f6;
+  background-color: #f3f4f6;
+}
+
+.aiWidgetContent {
+  color: #374151;
+}
+
+.aiStatusContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.aiStatusIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.aiStatusIndicator.connected {
+  background-color: #10b981;
+}
+
+.aiStatusIndicator.checking {
+  background-color: #f59e0b;
+}
+
+.aiStatusIndicator.disconnected {
+  background-color: #ef4444;
+}
+
+.aiStatusIndicator.unknown {
+  background-color: #6b7280;
+}
+
+.aiStatusText {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.aiModelInfo {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.25rem;
+  border-left: 3px solid #3b82f6;
+}
+
+.aiModelLabel {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.aiModelValue {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.aiLastChecked {
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.aiCapabilities {
+  margin-top: 1rem;
+}
+
+.aiCapabilitiesTitle {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.aiCapabilitiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.aiCapability {
+  font-size: 0.875rem;
+  color: #6b7280;
+  padding: 0.25rem 0;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.aiCapability:hover {
+  background-color: #f3f4f6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .aiWidget {
+    padding: 0.75rem;
+  }
+  
+  .aiWidgetTitle {
+    font-size: 0.875rem;
+  }
+  
+  .aiCapabilitiesList {
+    gap: 0.125rem;
+  }
+} 

@@ -1,3 +1,3 @@
-import AIStatusWidget from '../src/widgets/AIStatusWidget/AIStatusWidget.jsx';
+import AIStatusWidget from '../widgets/AIStatusWidget/AIStatusWidget.jsx';
 
 export default AIStatusWidget; 

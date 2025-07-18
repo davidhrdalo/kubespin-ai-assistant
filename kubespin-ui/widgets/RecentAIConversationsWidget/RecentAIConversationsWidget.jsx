@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './RecentAIConversationsWidget.module.css';
 
 const RecentAIConversationsWidget = () => {
   const [conversations, setConversations] = useState([]);
@@ -60,12 +61,12 @@ const RecentAIConversationsWidget = () => {
 
   if (isLoading) {
     return (
-      <div className="ai-widget">
-        <div className="ai-widget-header">
-          <h3 className="ai-widget-title">Recent AI Conversations</h3>
+      <div className={styles.aiWidget}>
+        <div className={styles.aiWidgetHeader}>
+          <h3 className={styles.aiWidgetTitle}>Recent AI Conversations</h3>
         </div>
-        <div className="ai-loading">
-          <div className="ai-spinner"></div>
+        <div className={styles.aiLoading}>
+          <div className={styles.aiSpinner}></div>
           <span>Loading conversations...</span>
         </div>
       </div>
@@ -73,63 +74,43 @@ const RecentAIConversationsWidget = () => {
   }
 
   return (
-    <div className="ai-widget">
-      <div className="ai-widget-header">
-        <h3 className="ai-widget-title">Recent AI Conversations</h3>
+    <div className={styles.aiWidget}>
+      <div className={styles.aiWidgetHeader}>
+        <h3 className={styles.aiWidgetTitle}>Recent AI Conversations</h3>
         <button
           onClick={() => window.location.href = '/plugin/ai-assistant/chat'}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '0.875rem',
-            color: '#3b82f6',
-            fontWeight: '500'
-          }}
+          className={styles.aiViewAllButton}
         >
           View All
         </button>
       </div>
 
-      <div className="ai-widget-content">
+      <div className={styles.aiWidgetContent}>
         {conversations.length === 0 ? (
-          <p style={{ textAlign: 'center', color: '#6b7280' }}>
+          <p className={styles.aiEmptyState}>
             No recent conversations
           </p>
         ) : (
-          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          <div className={styles.aiConversationsList}>
             {conversations.map((conversation) => (
               <div
                 key={conversation.id}
                 onClick={() => openChat(conversation.id)}
-                style={{
-                  padding: '0.75rem',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
-                  marginBottom: '0.5rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#3b82f6';
-                  e.target.style.backgroundColor = '#f8fafc';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#e5e7eb';
-                  e.target.style.backgroundColor = 'transparent';
-                }}
+                className={styles.aiConversationItem}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <strong style={{ fontSize: '0.875rem' }}>{conversation.title}</strong>
-                  <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                <div className={styles.aiConversationHeader}>
+                  <strong className={styles.aiConversationTitle}>{conversation.title}</strong>
+                  <span className={styles.aiConversationTime}>
                     {formatTimeAgo(conversation.timestamp)}
                   </span>
                 </div>
-                <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0 0 0.25rem 0' }}>
+                <p className={styles.aiConversationMessage}>
                   {conversation.lastMessage}
                 </p>
-                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-                  {conversation.messageCount} messages
+                <div className={styles.aiConversationMeta}>
+                  <span className={styles.aiMessageCount}>
+                    {conversation.messageCount} messages
+                  </span>
                 </div>
               </div>
             ))}

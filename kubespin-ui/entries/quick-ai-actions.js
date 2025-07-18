@@ -1,3 +1,3 @@
-import QuickAIActionsWidget from '../src/widgets/QuickAIActionsWidget/QuickAIActionsWidget.jsx';
+import QuickAIActionsWidget from '../widgets/QuickAIActionsWidget/QuickAIActionsWidget.jsx';
 
 export default QuickAIActionsWidget; 
